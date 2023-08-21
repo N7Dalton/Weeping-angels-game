@@ -50,4 +50,8 @@ public class WeepingAngelScript : MonoBehaviour
         }
 
     }
+    public void ChangeState()
+    {
+        
+    }
 }
