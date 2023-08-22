@@ -1,16 +1,21 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.SceneManagement;
 
 public class WeepingAngelScript : MonoBehaviour
 {
-    public GameObject Enemy;
+    public NavMeshAgent ai;
+    public FlashlightToggle flashtog;
+    public GameObject enemy;
     public Renderer enemyRen;
     public Transform player;
     public GameObject lEye;
     public GameObject rEye;
     public BoxCollider eyeCollider;
+    public float speed;
     // Start is called before the first frame update
     void Start()
     {
@@ -20,25 +25,26 @@ public class WeepingAngelScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
-        if (enemyRen.isVisible)
+        
+        if (flashtog.isOn == false)
         {
-            Debug.Log("Object is visible");
-
+            ai.SetDestination(player.position);
+             
+        }
+        else if (!enemyRen.isVisible)
+        {
+            ai.SetDestination(player.position);
         }
         else
         {
-            Debug.Log("Object is no longer visible");
-            Enemy.transform.LookAt(player);
-            Enemy.transform.Translate(0, 0, 5 * Time.deltaTime);
+            ai.SetDestination(enemy.transform.position);
         }
+       
     }
+   
     private void OnTriggerEnter(Collider other)
     {
-        
-        SceneManager.LoadScene("Death.");
-       
-       
+        SceneManager.LoadScene("Death.");  
     }
     private void OnTriggerExit(Collider eyeCollider)
     {
